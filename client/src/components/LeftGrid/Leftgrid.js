@@ -8,9 +8,10 @@ import { ShopOutlined, CloudOutlined } from '@ant-design/icons';
 import classes from './Leftgrid.module.css';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import TableGrid from '../TableGrid/TableGrid';
+import NewProductForm from '../NewProductForm/NewProductForm';
 
 const { Sider } = Layout;
-const LeftGrid = () => {
+const leftGrid = () => {
   const [collapsed, updateCollapsed] = useState(false);
   const [modelVisible, updateModelVisibility] = useState(false);
   const [confirmModalLoading, updateConfirmModalLoading] = useState(false);
@@ -51,13 +52,13 @@ const LeftGrid = () => {
               <span className='nav-text'>Add Product</span>
             </Menu.Item>
             <Modal
-              title='Title'
+              title='Add a Product'
               visible={modelVisible}
               onOk={onModalSubmission}
               confirmLoading={confirmModalLoading}
               onCancel={modalCancel}
             >
-              <p>Hi</p>
+              <NewProductForm />
             </Modal>
           </Menu>
         </Sider>
@@ -67,4 +68,4 @@ const LeftGrid = () => {
   );
 };
 
-export default LeftGrid;
+export default leftGrid;
