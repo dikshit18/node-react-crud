@@ -1,10 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Input, Button, Popconfirm } from 'antd';
-import { Layout, Breadcrumb } from 'antd/lib';
+import { Layout, Breadcrumb, Modal } from 'antd/lib';
 import 'antd/dist/antd.css';
 import classes from './TableGrid.module.css';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
+import NewProductForm from '../NewProductForm/NewProductForm';
 
 const { Header, Content } = Layout;
 
@@ -41,11 +42,19 @@ const data = [
   },
 ];
 
-const TableGrid = () => {
+const tableGrid = () => {
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
   const [apiResponse, udpateAPIResponse] = useState(data);
+  const [modelVisible, updateModelVisibility] = useState(false);
+  const [confirmModalLoading, updateConfirmModalLoading] = useState(false);
+  const [productDetails, updateProductDetails] = useState({});
+
+  // useEffect(() => {
+  //   if (deletePop) updateModelVisibility(false);
+  // });
+
   const handleDelete = productId => {
     const dataSource = [...apiResponse];
     const updatedDS = dataSource.filter(item => item.productId !== productId);
@@ -67,17 +76,19 @@ const TableGrid = () => {
       dataIndex: 'price',
       sorter: { compare: (a, b) => a.price - b.price },
     },
-    {
-      title: 'Operation',
-      dataIndex: 'operation',
-      render: (text, record) =>
-        data.length >= 1 ? (
-          <Popconfirm title='Sure to delete?' onConfirm={() => handleDelete(record.productId)}>
-            <a>Delete</a>
-          </Popconfirm>
-        ) : null,
-    },
   ];
+  const onModalSubmission = () => {
+    updateConfirmModalLoading(true);
+    // Call API to add Products
+    setTimeout(() => {
+      updateModelVisibility(false);
+      updateConfirmModalLoading(false);
+    }, 2000);
+  };
+
+  const modalCancel = () => {
+    updateModelVisibility(false);
+  };
 
   return (
     <Auxiliary>
@@ -97,7 +108,45 @@ const TableGrid = () => {
               dataSource={apiResponse}
               onChange={onChange}
               pagination={{ pageSize: 10 }}
+              onRow={(record, rowIndex) => {
+                // eslint-disable-next-line no-unused-expressions
+                return {
+                  onClick: event => {
+                    updateModelVisibility(!modelVisible);
+                    updateProductDetails({ ...record });
+                  }, // click row
+                };
+              }}
             />
+            {modelVisible ? (
+              <Modal
+                title='Edit a product'
+                visible={modelVisible}
+                onOk={onModalSubmission}
+                confirmLoading={confirmModalLoading}
+                onCancel={modalCancel}
+                footer={[
+                  <Button key='back' style={{ float: 'left' }} onClick={modalCancel}>
+                    Return
+                  </Button>,
+                  <Button
+                    key='submit'
+                    type='primary'
+                    style={{ float: 'left' }}
+                    loading={confirmModalLoading}
+                    onClick={onModalSubmission}
+                  >
+                    Submit
+                  </Button>,
+                  // Add handlers for this Button
+                  <Button key='delete' type='danger'>
+                    Delete
+                  </Button>,
+                ]}
+              >
+                <NewProductForm productDetails={{ ...productDetails }} />
+              </Modal>
+            ) : null}
           </div>
         </Content>
       </Layout>
@@ -105,4 +154,4 @@ const TableGrid = () => {
   );
 };
 
-export default TableGrid;
+export default tableGrid;
