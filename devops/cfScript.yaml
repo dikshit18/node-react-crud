@@ -1,22 +1,18 @@
 Resources:
-  Products:
+  ProductsTbl:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: "ProductId"
+        - AttributeName: ProductId
           AttributeType: "S"
-        - AttributeName: "ProductName"
-          AttributeType: "S"
-        - AttributeName: "ProductType"
-          AttributeType: "S"
-        - AttributeName: "Price"
-          AttributeType: "N"
       KeySchema:
-        - AttributeName: "ProductId"
+        - AttributeName: ProductId
           KeyType: "HASH"
+      TableName: Products
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
+  ProductsFunction:
     Type: AWS::Lambda::Function
     Properties:
       Runtime: nodejs12.x
@@ -26,10 +22,9 @@ Resources:
       Timeout: 30
       MemorySize: 128
       Code:
-        ZipFile: | 
+        ZipFile: |
           exports.handler =  async function(event, context) {
             console.log("EVENT: \n" + JSON.stringify(event, null, 2))
             return context.logStreamName
           }
       Description: Function to perform CRUD for Products.
-
