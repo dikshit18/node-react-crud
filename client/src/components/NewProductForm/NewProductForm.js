@@ -35,9 +35,9 @@ const newProductForm = props => {
       validateMessages={validateMessages}
       initialValues={{
         // eslint-disable-next-line react/destructuring-assignment
-        productName: props.productDetails.productName,
-        productType: props.productDetails.productType,
-        price: props.productDetails.price,
+        productName: props.productDetails ? props.productDetails.productName : null,
+        productType: props.productDetails ? props.productDetails.productType : null,
+        price: props.productDetails ? props.productDetails.price : null,
       }}
     >
       <Form.Item

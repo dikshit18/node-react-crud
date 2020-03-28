@@ -7,16 +7,24 @@ import axiosConfig from '../../shared/config/axiosConfig';
 class Layout extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      products: [],
+    };
   }
   async componentDidMount() {
     const products = await axiosConfig.get('/products');
-    console.log('products...', products);
+    //Add Error Boundary here
+    console.log('Products...', products);
+
+    this.setState({
+      products: products.data.data,
+    });
   }
   render() {
     return (
       <Auxiliary>
         <div className={classes.layout}>
-          <Grid />
+          <Grid products={this.state.products} />
         </div>
       </Auxiliary>
     );
