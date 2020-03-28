@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 import { Layout, Menu, Breadcrumb, Modal } from 'antd/lib';
-import 'antd/dist/antd.css';
+import './node_modules/antd/dist/antd.css';
 
 import { ShopOutlined, CloudOutlined } from '@ant-design/icons';
 import classes from './Leftgrid.module.css';
@@ -11,7 +11,7 @@ import TableGrid from '../TableGrid/TableGrid';
 import NewProductForm from '../NewProductForm/NewProductForm';
 
 const { Sider } = Layout;
-const leftGrid = () => {
+const grid = () => {
   const [collapsed, updateCollapsed] = useState(false);
   const [modelVisible, updateModelVisibility] = useState(false);
   const [confirmModalLoading, updateConfirmModalLoading] = useState(false);
@@ -20,7 +20,6 @@ const leftGrid = () => {
     updateCollapsed(collapsed);
   };
   const showModal = () => {
-    console.log('Span CLicked');
     updateModelVisibility(true);
   };
 
@@ -68,4 +67,4 @@ const leftGrid = () => {
   );
 };
 
-export default leftGrid;
+export default grid;

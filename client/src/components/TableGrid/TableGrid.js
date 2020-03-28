@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Input, Button, Popconfirm } from 'antd';
 import { Layout, Breadcrumb, Modal } from 'antd/lib';
-import 'antd/dist/antd.css';
+import '../../../node_modules/antd/dist/antd.css';
 import classes from './TableGrid.module.css';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import NewProductForm from '../NewProductForm/NewProductForm';
