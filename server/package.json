@@ -9,6 +9,7 @@
   "author": "dikshit.kathuria",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.648.0",
     "aws-serverless-express": "^3.3.8",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
