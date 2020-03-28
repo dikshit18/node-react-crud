@@ -4,5 +4,7 @@ const app = express();
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 
 app.use(awsServerlessExpressMiddleware.eventContext());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/", router);
 module.exports = app;

@@ -3,10 +3,10 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: ProductId
+        - AttributeName: productId
           AttributeType: "S"
       KeySchema:
-        - AttributeName: ProductId
+        - AttributeName: productId
           KeyType: "HASH"
       TableName: Products
       ProvisionedThroughput:
