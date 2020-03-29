@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 import { Layout, Menu, Breadcrumb, Modal } from 'antd/lib';
 import 'antd/dist/antd.css';
 
-import { ShopOutlined, CloudOutlined } from '@ant-design/icons';
-import classes from './Leftgrid.module.css';
+import { ShopOutlined, CloudOutlined, PropertySafetyFilled } from '@ant-design/icons';
+import classes from './Grid.module.css';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import TableGrid from '../TableGrid/TableGrid';
 import NewProductForm from '../NewProductForm/NewProductForm';
 
 const { Sider } = Layout;
-const grid = () => {
+const grid = props => {
   const [collapsed, updateCollapsed] = useState(false);
   const [modelVisible, updateModelVisibility] = useState(false);
   const [confirmModalLoading, updateConfirmModalLoading] = useState(false);
@@ -61,7 +61,7 @@ const grid = () => {
             </Modal>
           </Menu>
         </Sider>
-        <TableGrid />
+        <TableGrid products={props.products} onUpdate={props.onUpdate} onDelete={props.onDelete} />
       </Layout>
     </Auxiliary>
   );
