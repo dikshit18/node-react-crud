@@ -26,7 +26,7 @@ const createOrUpdateProduct = async (req, res) => {
   };
   try {
     await dynamoDb.put(params).promise();
-    return res.status(201).send({
+    return res.status(statusCode || 200).send({
       statusCode: statusCode || 200,
       message: message || "Product updated successfully.",
       productId: id
@@ -46,7 +46,7 @@ const getProducts = async (req, res) => {
   };
   try {
     const items = await dynamoDb.scan(params).promise();
-    return res.status(201).send({ statusCode: 201, data: items.Items });
+    return res.status(200).send({ statusCode: 200, data: items.Items });
   } catch (error) {
     console.log("Error while scanning database...", error);
     return res.status(500).send({
