@@ -1,9 +1,22 @@
-import React, { useState } from 'react';
-import { Button, Modal, Form, Input, Radio } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Modal, Form, Input, Radio, InputNumber } from 'antd';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 
-const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
+const CollectionCreateForm = ({ visible, onCancel, productDetails, onUpdate, onDelete }) => {
+  const layout = {
+    labelCol: {
+      span: 8,
+    },
+    wrapperCol: {
+      span: 16,
+    },
+  };
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
   const [form] = Form.useForm();
+  const onFinish = values => {
+    console.log('Received values of form: ', values);
+  };
   return (
     <Modal
       visible={visible}
@@ -11,68 +24,129 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
       okText='Update'
       cancelText='Cancel'
       onCancel={onCancel}
-      onOk={() => {
-        form
-          .validateFields()
-          .then(values => {
-            form.resetFields();
-            onCreate(values);
-          })
-          .catch(info => {
-            console.log('Validate Failed:', info);
-          });
-      }}
+      footer={[
+        <Button key='back' style={{ float: 'left' }} onClick={onCancel}>
+          Cancel
+        </Button>,
+        <Button
+          key='submit'
+          type='primary'
+          style={{ float: 'left' }}
+          loading={loadingSubmit}
+          onClick={() => {
+            form
+              .validateFields()
+              .then(async values => {
+                loadingSubmit(true);
+                await onUpdate(values);
+                setLoadingSubmit(false);
+                onCancel();
+              })
+              .catch(info => {
+                console.log('Validate Failed:', info);
+              });
+          }}
+        >
+          Submit
+        </Button>,
+        // Add handlers for this Button
+        <Button
+          key='delete'
+          type='danger'
+          loading={loadingDelete}
+          onClick={() => {
+            form
+              .validateFields()
+              .then(async values => {
+                setLoadingDelete(true);
+                await onDelete(values.productId);
+                setLoadingDelete(false);
+                onCancel();
+              })
+              .catch(info => {
+                console.log('Validate Failed:', info);
+              });
+          }}
+        >
+          Delete
+        </Button>,
+      ]}
     >
       <Form
         form={form}
-        layout='vertical'
-        name='form_in_modal'
+        {...layout}
+        name='nest-messages'
+        onFinish={onFinish}
+        //validateMessages={validateMessages}
         initialValues={{
-          modifier: 'public',
+          // eslint-disable-next-line react/destructuring-assignment
+          productName: productDetails.productName,
+          productType: productDetails.productType,
+          price: productDetails.price,
+          productId: productDetails.productId,
         }}
       >
         <Form.Item
-          name='title'
-          label='Title'
+          name='productName'
+          label='Product Name'
           rules={[
             {
               required: true,
-              message: 'Please input the title of collection!',
             },
           ]}
         >
           <Input />
         </Form.Item>
-        <Form.Item name='description' label='Description'>
-          <Input type='textarea' />
+        <Form.Item
+          name='productType'
+          label='Product Type'
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
         </Form.Item>
-        <Form.Item name='modifier' className='collection-create-form_last-form-item'>
-          <Radio.Group>
-            <Radio value='public'>Public</Radio>
-            <Radio value='private'>Private</Radio>
-          </Radio.Group>
+        <Form.Item
+          name='price'
+          label='Price'
+          rules={[
+            {
+              type: 'number',
+              min: 0,
+              max: 1000000000,
+              required: true,
+            },
+          ]}
+        >
+          <InputNumber />
         </Form.Item>
+        <Form.Item
+          hidden={true}
+          name='productId'
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        ></Form.Item>
       </Form>
     </Modal>
   );
 };
 
 const formModal = props => {
-  const [visible, setVisible] = useState(false);
-
-  const onCreate = values => {
-    console.log('Received values of form: ', values);
-    setVisible(false);
-  };
+  console.log('ProductDetails', props.productDetails);
 
   return (
     <Auxiliary>
       <CollectionCreateForm
         visible={props.visible}
-        onCreate={onCreate}
-        onCancel={() => {
-          setVisible(false);
-        }}
+        onCancel={() => props.cancel()}
+        productDetails={props.productDetails}
+        onUpdate={updatedProductDetails => props.onUpdate(updatedProductDetails)}
+        onDelete={productId => props.onDelete(productId)}
       />
     </Auxiliary>
   );

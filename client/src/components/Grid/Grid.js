@@ -61,7 +61,7 @@ const grid = props => {
             </Modal>
           </Menu>
         </Sider>
-        <TableGrid products={props.products} />
+        <TableGrid products={props.products} onUpdate={props.onUpdate} onDelete={props.onDelete} />
       </Layout>
     </Auxiliary>
   );
