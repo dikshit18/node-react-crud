@@ -9,27 +9,20 @@ import classes from './Grid.module.css';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import TableGrid from '../TableGrid/TableGrid';
 import NewProductForm from '../NewProductForm/NewProductForm';
+import FormModal from '../FormModal/FormModal';
+import Test from '../../Test/Test';
 
 const { Sider } = Layout;
 const grid = props => {
   const [collapsed, updateCollapsed] = useState(false);
   const [modelVisible, updateModelVisibility] = useState(false);
-  const [confirmModalLoading, updateConfirmModalLoading] = useState(false);
+  const [productDetails, updateProductDetails] = useState({});
 
   const onCollapse = collapsed => {
     updateCollapsed(collapsed);
   };
   const showModal = () => {
     updateModelVisibility(true);
-  };
-
-  const onModalSubmission = () => {
-    updateConfirmModalLoading(true);
-    // Call API to add Products
-    setTimeout(() => {
-      updateModelVisibility(false);
-      updateConfirmModalLoading(false);
-    }, 2000);
   };
 
   const modalCancel = () => {
@@ -50,18 +43,22 @@ const grid = props => {
               <CloudOutlined />
               <span className='nav-text'>Add Product</span>
             </Menu.Item>
-            <Modal
-              title='Add a Product'
-              visible={modelVisible}
-              onOk={onModalSubmission}
-              confirmLoading={confirmModalLoading}
-              onCancel={modalCancel}
-            >
-              <NewProductForm />
-            </Modal>
           </Menu>
+          <FormModal
+            visible={modelVisible}
+            cancel={modalCancel}
+            productDetails={productDetails}
+            onCreate={props.onCreate}
+            createActive={true}
+          />
+          {/* <Test call={'Grid'} /> */}
         </Sider>
-        <TableGrid products={props.products} onUpdate={props.onUpdate} onDelete={props.onDelete} />
+        <TableGrid
+          products={props.products}
+          onUpdate={props.onUpdate}
+          onDelete={props.onDelete}
+          productDetails={props.productDetails}
+        />
       </Layout>
     </Auxiliary>
   );
