@@ -72,6 +72,7 @@ const tableGrid = props => {
             style={{ padding: 24, minHeight: 360 }}
           >
             <Table
+              rowKey={'productId'}
               columns={dbSchema}
               dataSource={props.products}
               onChange={onChange}
@@ -92,6 +93,7 @@ const tableGrid = props => {
               productDetails={productDetails}
               onUpdate={props.onUpdate}
               onDelete={props.onDelete}
+              createActive={false}
             />
           </div>
         </Content>

@@ -30,6 +30,16 @@ class Layout extends Component {
     return;
   };
 
+  onCreate = async productDetails => {
+    delete productDetails.productId;
+    await axiosConfig.post('/products', productDetails);
+    const updatedData = await axiosConfig.get('/products');
+    this.setState({
+      products: updatedData.data.data,
+    });
+    return;
+  };
+
   onDelete = async productId => {
     await axiosConfig.delete(`/products/${productId}`);
     const updatedData = await axiosConfig.get('/products');
@@ -43,7 +53,12 @@ class Layout extends Component {
     return (
       <Auxiliary>
         <div className={classes.layout}>
-          <Grid products={this.state.products} onUpdate={this.onUpdate} onDelete={this.onDelete} />
+          <Grid
+            products={this.state.products}
+            onUpdate={this.onUpdate}
+            onDelete={this.onDelete}
+            onCreate={this.onCreate}
+          />
         </div>
       </Auxiliary>
     );

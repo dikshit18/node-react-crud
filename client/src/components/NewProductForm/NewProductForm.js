@@ -28,18 +28,7 @@ const newProductForm = props => {
 
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
-    <Form
-      {...layout}
-      name='nest-messages'
-      onFinish={onFinish}
-      validateMessages={validateMessages}
-      initialValues={{
-        // eslint-disable-next-line react/destructuring-assignment
-        productName: props.productDetails ? props.productDetails.productName : null,
-        productType: props.productDetails ? props.productDetails.productType : null,
-        price: props.productDetails ? props.productDetails.price : null,
-      }}
-    >
+    <Form {...layout} name='nest-messages' onFinish={onFinish} validateMessages={validateMessages}>
       <Form.Item
         name='productName'
         label='Product Name'
