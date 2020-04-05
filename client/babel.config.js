@@ -1,12 +1,14 @@
 module.exports = function (api) {
   api.cache(true);
 
+  // https://createapp.dev/webpack to take reference
+
   const presets = [
     [
-      '@babel/preset-env',
+      '@babel/preset-env', // <<Last Preset to be applied>>
       {
         targets: {
-          ie: 11,
+          ie: 11, //Defining browsers and versions. Exampe "chrome":10
         },
         modules: false,
         debug: true,
@@ -14,10 +16,11 @@ module.exports = function (api) {
         corejs: '2',
       },
     ],
-    ['@babel/preset-react'],
+    ['@babel/preset-react'], // <<First Preset to be applied>>
   ];
   const plugins = [
-    '@babel/plugin-syntax-dynamic-import',
+    //The plugins are applied first, top to bottom.
+    '@babel/plugin-syntax-dynamic-import', // <<Start Here>>
     '@babel/plugin-proposal-object-rest-spread',
     [
       '@babel/plugin-transform-regenerator',
@@ -37,7 +40,7 @@ module.exports = function (api) {
     '@babel/plugin-transform-react-constant-elements',
     '@babel/plugin-transform-react-inline-elements',
     'transform-es2015-shorthand-properties',
-    '@babel/plugin-transform-runtime',
+    '@babel/plugin-transform-runtime', // <<Last Plugin To Be Executed>>
   ];
 
   return {
